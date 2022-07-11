@@ -63,6 +63,8 @@ public class ChessMatch {
 		return enPassantVunerable;
 	}
 
+	
+	
 	public boolean[][] possibleMoves(ChessPosition sourcePosition) {
 		Position source = sourcePosition.toPosition();
 		validateSourcePosition(source);
@@ -225,8 +227,7 @@ public class ChessMatch {
 	}
 
 	private ChessPiece king(Color color) {
-		List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color)
-				.collect(Collectors.toList());
+		List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
 		for (Piece p : list) {
 			if (p instanceof King) {
 				return (ChessPiece) p;
@@ -237,8 +238,7 @@ public class ChessMatch {
 
 	private boolean testCheck(Color color) {
 		Position kingPosition = king(color).getChessPosition().toPosition();
-		List<Piece> opponentPieces = piecesOnTheBoard.stream()
-				.filter(x -> ((ChessPiece) x).getColor() == opponent(color)).collect(Collectors.toList());
+		List<Piece> opponentPieces = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == opponent(color)).collect(Collectors.toList());
 		for (Piece p : opponentPieces) {
 			boolean[][] mat = p.possibleMoves();
 			if (mat[kingPosition.getRow()][kingPosition.getColumn()]) {
@@ -247,14 +247,15 @@ public class ChessMatch {
 		}
 		return false;
 	}
+	
+	
 
 	private boolean testCheckMate(Color color) {
 		if (!testCheck(color)) {
 			return false;
 		}
-		List<Piece> opponentPieces = piecesOnTheBoard.stream()
-				.filter(x -> ((ChessPiece) x).getColor() == opponent(color)).collect(Collectors.toList());
-		for (Piece p : opponentPieces) {
+		List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+		for (Piece p : list) {
 			boolean[][] mat = p.possibleMoves();
 			for (int i = 0; i < board.getRows(); i++) {
 				for (int j = 0; j < board.getColumns(); j++) {
@@ -273,6 +274,8 @@ public class ChessMatch {
 		}
 		return true;
 	}
+	
+
 
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition());
